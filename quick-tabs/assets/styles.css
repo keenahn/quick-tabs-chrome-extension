@@ -24,9 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+* {
+  background: #000;
+  color: #fff;
+}
+
 body {
   font-size: 12px;
-  font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+  font-family: "Helvetica Neue";
   color: #200772;
   padding: 0;
   margin: 0;
