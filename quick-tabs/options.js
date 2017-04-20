@@ -25,93 +25,94 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 function displayKey(prefix, key) {
-  $('#' + prefix + '_key').val(key.key);
-  $('#' + prefix + '_ctrl').attr('checked', key.ctrl);
-  $('#' + prefix + '_shift').attr('checked', key.shift);
-  $('#' + prefix + '_alt').attr('checked', key.alt);
-  $('#' + prefix + '_meta').attr('checked', key.meta);
+  $('#' + prefix + '_key').val(key.key)
+  $('#' + prefix + '_ctrl').attr('checked', key.ctrl)
+  $('#' + prefix + '_shift').attr('checked', key.shift)
+  $('#' + prefix + '_alt').attr('checked', key.alt)
+  $('#' + prefix + '_meta').attr('checked', key.meta)
 }
 
 function assignKeyProperties(prefix, key) {
-  key.key   = $('#' + prefix + '_key').val();
-  key.ctrl  = $('#' + prefix + '_ctrl')[0].checked;
-  key.shift = $('#' + prefix + '_shift')[0].checked;
-  key.alt   = $('#' + prefix + '_alt')[0].checked;
-  key.meta  = $('#' + prefix + '_meta')[0].checked;
-  return key;
+  key.key = $('#' + prefix + '_key').val()
+  key.ctrl = $('#' + prefix + '_ctrl')[0].checked
+  key.shift = $('#' + prefix + '_shift')[0].checked
+  key.alt = $('#' + prefix + '_alt')[0].checked
+  key.meta = $('#' + prefix + '_meta')[0].checked
+  return key
 }
 
-var bg = chrome.extension.getBackgroundPage();
+var bg = chrome.extension.getBackgroundPage()
 
 $(document).ready(function() {
-
   // load the saved options
-  var closeTabKey = bg.getCloseTabKey();
-  var closeAllTabsKey = bg.getCloseAllTabsKey();
-  var newTabKey = bg.getNewTabKey();
+  var closeTabKey = bg.getCloseTabKey()
+  var closeAllTabsKey = bg.getCloseAllTabsKey()
+  var newTabKey = bg.getNewTabKey()
 
-  displayKey("close", closeTabKey);
-  displayKey("close_all", closeAllTabsKey);
-  displayKey("new_tab", newTabKey);
+  displayKey('close', closeTabKey)
+  displayKey('close_all', closeAllTabsKey)
+  displayKey('new_tab', newTabKey)
 
-  $("#closed_tabs_size").val(bg.getClosedTabsSize());
-  $("#search_string").val(bg.getSearchString());
-  $("#history_filter").val(bg.getHistoryFilter());
-  $("#custom_css").val(bg.getCustomCss());
-  $("#auto_search_bookmarks").attr('checked', bg.autoSearchBookmarks());
-  $("#show_dev_tools").attr('checked', bg.showDevTools());
-  $("#show_urls").attr('checked', bg.showUrls());
-  $("#search_fuzzy").attr('checked', bg.searchFuzzy());
-  $("#search_urls").attr('checked', bg.searchUrls());
-  $("#show_tab_count").attr('checked', bg.showTabCount());
-  $("#show_tooltips").attr('checked', bg.showTooltips());
-  $("#show_favicons").attr('checked', bg.showFavicons());
-  $("#pageup_pagedown_skip_size").val(bg.pageupPagedownSkipSize());
-  $("#move_on_switch").attr('checked', bg.moveOnSwitch());
+  $('#closed_tabs_size').val(bg.getClosedTabsSize())
+  $('#search_string').val(bg.getSearchString())
+  $('#history_filter').val(bg.getHistoryFilter())
+  $('#custom_css').val(bg.getCustomCss())
+  $('#auto_search_bookmarks').attr('checked', bg.autoSearchBookmarks())
+  $('#show_dev_tools').attr('checked', bg.showDevTools())
+  $('#show_urls').attr('checked', bg.showUrls())
+  $('#search_fuzzy').attr('checked', bg.searchFuzzy())
+  $('#search_urls').attr('checked', bg.searchUrls())
+  $('#show_tab_count').attr('checked', bg.showTabCount())
+  $('#show_tooltips').attr('checked', bg.showTooltips())
+  $('#show_favicons').attr('checked', bg.showFavicons())
+  $('#pageup_pagedown_skip_size').val(bg.pageupPagedownSkipSize())
+  $('#move_on_switch').attr('checked', bg.moveOnSwitch())
 
   // if a shortcut key is defined alert the user that the shortcut key configuration has changed
-  var sk = bg.getShortcutKey();
-  if(sk.pattern() != "") {
-    $(".shortcutAlert > p").text("WARNING: the popup window shortcut key is now managed by Chrome, your old setting was " +
-        sk.pattern() + ", see below.");
+  var sk = bg.getShortcutKey()
+  if (sk.pattern() != '') {
+    $('.shortcutAlert > p').text(
+      'WARNING: the popup window shortcut key is now managed by Chrome, your old setting was ' +
+        sk.pattern() +
+        ', see below.'
+    )
 
-    $(".shortcutAlert")
-        .fadeTo('slow', 1)
-        .animate({opacity: 1.0}, 3000);
+    $('.shortcutAlert').fadeTo('slow', 1).animate({ opacity: 1.0 }, 3000)
 
-    $("#shortcut_done").click(function () {
-      bg.clearOldShortcutKey();
-      $(".shortcutAlert").slideUp();
-    });
+    $('#shortcut_done').click(function() {
+      bg.clearOldShortcutKey()
+      $('.shortcutAlert').slideUp()
+    })
   }
 
   // Update status to let user know options were saved.
-  $("#save_btn").click(function() {
-    bg.setCloseTabKey(assignKeyProperties("close", closeTabKey));
-    bg.setCloseAllTabsKey(assignKeyProperties("close_all", closeAllTabsKey));
-    bg.setNewTabKey(assignKeyProperties("new_tab", newTabKey));
+  $('#save_btn').click(function() {
+    bg.setCloseTabKey(assignKeyProperties('close', closeTabKey))
+    bg.setCloseAllTabsKey(assignKeyProperties('close_all', closeAllTabsKey))
+    bg.setNewTabKey(assignKeyProperties('new_tab', newTabKey))
 
-    bg.setClosedTabsSize($("#closed_tabs_size").val());
-    bg.setSearchString($("#search_string").val());
-    bg.setHistoryFilter($("#history_filter").val());
-    bg.setCustomCss($("#custom_css").val());
-    bg.setShowUrls($("#show_urls").is(':checked'));
-    bg.setSearchFuzzy($("#search_fuzzy").is(':checked'));
-    bg.setSearchUrls($("#search_urls").is(':checked'));
-    bg.setShowTabCount($("#show_tab_count").is(':checked'));
-    bg.setShowTooltips($("#show_tooltips").is(':checked'));
-    bg.setShowFavicons($("#show_favicons").is(':checked'));
-    bg.setAutoSearchBookmarks($("#auto_search_bookmarks").is(':checked'));
-    bg.setShowDevTools($("#show_dev_tools").is(':checked'));
-    bg.setPageupPagedownSkipSize($("#pageup_pagedown_skip_size").val());
-    bg.setMoveOnSwitch($("#move_on_switch").is(':checked'));
+    bg.setClosedTabsSize($('#closed_tabs_size').val())
+    bg.setSearchString($('#search_string').val())
+    bg.setHistoryFilter($('#history_filter').val())
+    bg.setCustomCss($('#custom_css').val())
+    bg.setShowUrls($('#show_urls').is(':checked'))
+    bg.setSearchFuzzy($('#search_fuzzy').is(':checked'))
+    bg.setSearchUrls($('#search_urls').is(':checked'))
+    bg.setShowTabCount($('#show_tab_count').is(':checked'))
+    bg.setShowTooltips($('#show_tooltips').is(':checked'))
+    bg.setShowFavicons($('#show_favicons').is(':checked'))
+    bg.setAutoSearchBookmarks($('#auto_search_bookmarks').is(':checked'))
+    bg.setShowDevTools($('#show_dev_tools').is(':checked'))
+    bg.setPageupPagedownSkipSize($('#pageup_pagedown_skip_size').val())
+    bg.setMoveOnSwitch($('#move_on_switch').is(':checked'))
 
     // bg.rebindShortcutKeys();
 
     // Update status to let user know options were saved.
-    $(".alert").text("Options saved.")
-            .fadeTo('slow', 1)
-            .animate({opacity: 1.0}, 3000)
-            .fadeTo('slow', 0);
-  });
-});
+    $('.alert')
+      .text('Options saved.')
+      .fadeTo('slow', 1)
+      .animate({ opacity: 1.0 }, 3000)
+      .fadeTo('slow', 0)
+  })
+})

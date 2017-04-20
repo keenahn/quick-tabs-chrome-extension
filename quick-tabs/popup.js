@@ -344,6 +344,12 @@ $(document).ready(function() {
 
 });
 
+function SortByIndex(a, b){
+  var aIdx = a.index
+  var bIdx = b.index
+  return ((aIdx < bIdx) ? -1 : ((aIdx > bIdx) ? 1 : 0))
+}
+
 function drawCurrentTabs() {
   /**
    * This seems kinda nasty but it ensures that we are rendering the latest title information for the tabs
@@ -357,7 +363,7 @@ function drawCurrentTabs() {
     // render only the tabs and closed tabs on initial load (hence the empty array [] for bookmarks)
     // also drop the first entry since that's the current tab =)
     renderTabs({
-      allTabs: bg.tabs.slice(1),
+      allTabs: bg.tabs.slice(1).sort(SortByIndex),
       closedTabs: bg.closedTabs,
       bookmarks: []
     });
